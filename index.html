@@ -54,3 +54,32 @@ document.querySelector('[data-view="absensi"]').addEventListener('click',()=>{re
 setInterval(()=>{const isStudent=document.querySelector('#roleLabel').textContent.includes('Siswa/Mahasiswa');const isTeacher=document.querySelector('#roleLabel').textContent.includes('Guru/Dosen');const navAbs=document.querySelector('[data-view="absensi"]');if(navAbs)navAbs.style.display=(isStudent||isTeacher)?'block':'none';const t=document.querySelector('#attendanceTeacher'),s=document.querySelector('#attendanceStudent');if(t&&s){t.style.display=isTeacher?'block':'none';s.style.display=isTeacher?'none':'block'}},300);
 renderAttendanceTable();renderAttendancePercent();
 </script>
+<script>
+(function(){
+function refreshAttendancePage(){
+ const role=(document.querySelector('#roleLabel')?.textContent||'').toLowerCase();
+ const teacher=role.includes('guru/dosen')||role.includes('guru')||role.includes('dosen');
+ const student=role.includes('siswa/mahasiswa')||role.includes('siswa')||role.includes('mahasiswa');
+ const teacherBox=document.querySelector('#attendanceTeacher'),studentBox=document.querySelector('#attendanceStudent'),nav=document.querySelector('[data-view="absensi"]');
+ if(teacherBox)teacherBox.style.display=teacher?'block':'none';
+ if(studentBox)studentBox.style.display=student?'block':'none';
+ if(nav)nav.style.display=(teacher||student)?'block':'none';
+ const body=document.querySelector('#attendanceBody'),select=document.querySelector('#attendanceSubject');
+ if(!teacher||!body||!select)return;
+ const key='schoolhub-attendance';
+ let data={};try{data=JSON.parse(localStorage.getItem(key))||{}}catch(e){}
+ const subjects=['Manajemen Kearsipan','Manajemen Berbasis Sekolah','Perencanaan Pendidikan'];
+ const id=x=>String(x.name||'').trim().toLowerCase()+'|'+String(x.className||'').trim().toLowerCase();
+ subjects.forEach(s=>{if(!data[s]||typeof data[s]!=='object')data[s]={};students.forEach(x=>{if(!data[s][id(x)])data[s][id(x)]='hadir'})});
+ localStorage.setItem(key,JSON.stringify(data));
+ const subject=select.value;
+ body.innerHTML=students.length?students.map((x,i)=>{const v=data[subject][id(x)]||'hadir';return '<tr><td><b>'+x.name+'</b><div class="muted">Kelas '+x.className+'</div></td><td><input type="radio" name="fixedAtt'+i+'" value="hadir" '+(v==='hadir'?'checked':'')+'></td><td><input type="radio" name="fixedAtt'+i+'" value="izin" '+(v==='izin'?'checked':'')+'></td><td><input type="radio" name="fixedAtt'+i+'" value="sakit" '+(v==='sakit'?'checked':'')+'></td><td><input type="radio" name="fixedAtt'+i+'" value="alpa" '+(v==='alpa'?'checked':'')+'></td></tr>'}).join(''):'<tr><td colspan="5"><b>Belum ada siswa.</b><div class="muted">Tambahkan siswa melalui Dashboard Admin → Kelola Data Siswa.</div></td></tr>';
+ const save=document.querySelector('#saveAttendance');
+ if(save&&!save.dataset.fixed){save.dataset.fixed='1';save.onclick=function(){const subject=select.value;data[subject]={};students.forEach((x,i)=>{const checked=document.querySelector('input[name="fixedAtt'+i+'"]:checked');data[subject][id(x)]=checked?checked.value:'hadir'});localStorage.setItem(key,JSON.stringify(data));refreshAttendancePage();const m=document.querySelector('#attendanceMsg');if(m)m.textContent='Absensi '+subject+' berhasil disimpan.'}}
+}
+document.querySelector('[data-view="absensi"]')?.addEventListener('click',()=>setTimeout(refreshAttendancePage,0));
+document.querySelector('#attendanceSubject')?.addEventListener('change',refreshAttendancePage);
+setInterval(refreshAttendancePage,500);
+refreshAttendancePage();
+})();
+</script>
