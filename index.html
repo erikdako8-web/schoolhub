@@ -16,14 +16,14 @@
 </style></head>
 <body><div id="app">
 <header class="top"><div class="brand"><div class="logo">S</div>SchoolHub</div><div class="user"><span id="roleLabel">Portal Manajemen Sekolah</span><button id="editBtn" class="editBtn">🔐 Login Guru/Dosen</button><div class="avatar">AD</div></div></header>
-<div class="layout"><aside class="side"><nav class="nav"><button class="active" data-view="dashboard">⌂ &nbsp; Dashboard</button><button data-view="siswa">👨‍🎓 &nbsp; Data Siswa</button><button data-view="guru">👨‍🏫 &nbsp; Data Guru</button><button data-view="jadwal">◷ &nbsp; Jadwal</button><button data-view="absensi">✓ &nbsp; Absensi</button><button data-view="materi">▣ &nbsp; Materi & Tugas</button><button data-view="pengumuman">! &nbsp; Pengumuman</button></nav></aside>
+<div class="layout"><aside class="side"><nav class="nav"><button class="active" data-view="dashboard">⌂ &nbsp; Dashboard</button><button data-view="siswa">👨‍🎓 &nbsp; Data Siswa</button><button data-view="guru">👨‍🏫 &nbsp; Data Guru</button><button data-view="jadwal">◷ &nbsp; Jadwal</button><button data-view="absensi">✓ &nbsp; Absensi</button><button data-view="materi">▣ &nbsp; Materi</button><button data-view="tugas">📝 &nbsp; Tugas</button><button data-view="pengumuman">! &nbsp; Pengumuman</button></nav></aside>
 <main class="main">
 <section id="dashboard" class="view active"><div class="hero"><div><h1>Selamat datang 👋</h1><p>Kelola informasi dan kegiatan akademik sekolah dalam satu tempat.</p></div><input class="search" id="search" placeholder="Cari siswa, guru, materi..." /></div>
 <div class="grid"><div class="card"><div class="muted">Total siswa</div><div class="stat">486</div><div class="muted">Tahun ajaran 2026/2027</div></div><div class="card"><div class="muted">Guru & tenaga kependidikan</div><div class="stat">42</div><div class="muted">Aktif</div></div><div class="card"><div class="muted">Kehadiran hari ini</div><div class="stat">94%</div><div class="muted">Data diperbarui pagi ini</div></div><div class="card"><div class="muted">Pengumuman</div><div class="stat">5</div><div class="muted">2 informasi baru</div></div></div>
 <div class="section-head"><h2>Mata Pelajaran / Mata Kuliah</h2><span class="link" data-view="materi">Lihat semua →</span></div><div class="courses"><div class="card course"><div class="cover"><b>Manajemen Pendidikan</b><div class="muted" style="color:#e9edff">Semester 3</div></div><div class="course-body"><h3>Manajemen Kearsipan</h3><span class="muted">8 materi • 3 tugas</span><div class="progress"><div class="bar" style="width:78%"></div></div><div class="muted" style="margin-top:7px">78% selesai</div></div></div><div class="card course"><div class="cover green"><b>Pengelolaan Sekolah</b><div class="muted" style="color:#e9fff5">Semester 3</div></div><div class="course-body"><h3>Manajemen Berbasis Sekolah</h3><span class="muted">6 materi • 2 tugas</span><div class="progress"><div class="bar" style="width:62%"></div></div><div class="muted" style="margin-top:7px">62% selesai</div></div></div><div class="card course"><div class="cover orange"><b>Perencanaan</b><div class="muted" style="color:#fff5e8">Semester 3</div></div><div class="course-body"><h3>Perencanaan Pendidikan</h3><span class="muted">10 materi • 4 tugas</span><div class="progress"><div class="bar" style="width:48%"></div></div><div class="muted" style="margin-top:7px">48% selesai</div></div></div></div>
 <div class="section-head"><h2>Aktivitas Terbaru</h2><span class="link">Semua aktivitas</span></div><div class="list"><div class="item"><div><b>Materi baru: Prosedur Pencatatan Arsip</b><div class="muted">Dosen • 2 jam lalu</div></div><span class="badge">Baru</span></div><div class="item"><div><b>Tugas MBS dikumpulkan</b><div class="muted">Deadline: 2 Oktober 2026</div></div><span class="badge">Aktif</span></div></div></section>
 <section id="siswa" class="view"><div class="hero"><div><h1>Data Siswa</h1><p>Ringkasan data peserta didik. <span class="badge">Versi terbaru</span></p></div></div><div class="grid"><div class="card"><div class="muted">Siswa aktif</div><div class="stat" id="summaryStudentCount">486</div><div class="muted">Dikelola Guru/Dosen</div></div><div class="card"><div class="muted">Kelas</div><div class="stat" id="summaryClassCount">18</div><div class="muted">Bisa diperbarui Admin</div></div><div class="card"><div class="muted">Rata-rata kehadiran</div><div class="stat" id="summaryAttendance">94%</div><div class="muted">Bisa diperbarui Admin</div></div></div><div class="adminPanel"><h2>Daftar Siswa</h2><table class="adminTable"><thead><tr><th>Nama</th><th>Kelas</th></tr></thead><tbody id="summaryStudentBody"></tbody></table></div></section>
-<section id="materi" class="view"><div class="hero"><div><h1>Materi Pembelajaran</h1><p>Semua bahan belajar tersusun berdasarkan mata kuliah.</p></div></div><div class="grid"><div class="card"><b>Manajemen Kearsipan</b><p class="muted">8 materi tersedia</p><span class="badge">Buka materi</span></div><div class="card"><b>Manajemen Berbasis Sekolah</b><p class="muted">6 materi tersedia</p><span class="badge">Buka materi</span></div><div class="card"><b>Perencanaan Pendidikan</b><p class="muted">10 materi tersedia</p><span class="badge">Buka materi</span></div></div></section>
+<section id="materi" class="view"><div class="hero"><div><h1>Materi Pembelajaran</h1><p>Guru/Dosen dapat menambahkan file materi. Siswa/Mahasiswa dapat melihat dan membuka materi yang tersedia.</p></div></div><div id="materiTeacher" class="adminPanel" style="display:none"><div class="section-head"><h2>Tambah File Materi</h2><span class="badge">Khusus Guru/Dosen</span></div><div class="grid"><div><label>Mata Pelajaran / Mata Kuliah</label><select id="materiSubject" class="search" style="width:100%"><option>Manajemen Kearsipan</option><option>Manajemen Berbasis Sekolah</option><option>Perencanaan Pendidikan</option></select></div><div><label>Judul Materi</label><input id="materiTitle" class="search" style="width:100%" placeholder="Contoh: Prosedur Pencatatan Arsip"></div><div><label>File Materi</label><input id="materiFile" type="file" class="search" style="width:100%"></div></div><button id="addMateri" class="crudBtn">＋ Tambahkan Materi</button><p id="materiMsg" class="muted"></p></div><div class="adminPanel"><div class="section-head"><h2>Daftar Materi</h2><span class="badge" id="materiCount">0 file</span></div><div id="materiList" class="list"></div></div></section>
 <section id="tugas" class="view"><div class="hero"><div><h1>Daftar Tugas</h1><p>Pantau tugas dan tenggat waktu.</p></div></div><div class="list"><div class="item"><div><b>Makalah Pencatatan dan Klasifikasi Arsip</b><div class="muted">Manajemen Kearsipan • 2 Oktober 2026</div></div><span class="badge">Belum dikumpulkan</span></div><div class="item"><div><b>Analisis Implementasi MBS</b><div class="muted">MBS • 5 Oktober 2026</div></div><span class="badge">Dikerjakan</span></div><div class="item"><div><b>Literature Review Perencanaan Pendidikan</b><div class="muted">Perencanaan • 8 Oktober 2026</div></div><span class="badge">Belum mulai</span></div></div></section>
 <section id="jadwal" class="view"><div class="hero"><div><h1>Jadwal</h1><p>Jadwal kegiatan belajar minggu ini.</p></div></div><div class="card"><table class="table"><tr><th>Hari</th><th>Waktu</th><th>Mata Kuliah</th><th>Ruangan</th></tr><tr><td>Senin</td><td>08.00–09.40</td><td>Manajemen Kearsipan</td><td>A-203</td></tr><tr><td>Selasa</td><td>10.00–11.40</td><td>MBS</td><td>B-101</td></tr><tr><td>Rabu</td><td>13.00–14.40</td><td>Perencanaan Pendidikan</td><td>A-205</td></tr><tr><td>Kamis</td><td>08.00–09.40</td><td>Sistem Informasi</td><td>Lab 2</td></tr></table></div></section>
 <section id="pengumuman" class="view"><div class="hero"><div><h1>Pengumuman</h1><p>Informasi penting dari guru dan dosen.</p></div></div><div class="list"><div class="card notice"><b>Perubahan jadwal perkuliahan</b><p class="muted">Perkuliahan hari Jumat dipindahkan ke Senin pukul 10.00.</p></div><div class="card notice"><b>Pengumpulan tugas</b><p class="muted">Pastikan file tugas sudah diunggah sebelum batas waktu.</p></div></div></section>
@@ -35,6 +35,28 @@
 <div id="loginModal" class="modal"><div class="loginPage"><h2>Login Guru/Dosen</h2><p class="muted">Masuk untuk membuka Dashboard Admin dan mengelola data SchoolHub.</p><label>Email</label><input id="loginEmail" type="email" placeholder="guru@schoolhub.id"><label>Password</label><input id="accessCode" type="password" placeholder="Masukkan password"><div class="loginActions"><button id="cancelLogin" class="secondaryBtn">Batal</button><button id="loginBtn" class="primaryBtn">Login</button></div><p id="loginMsg" class="muted"></p><p class="muted">Demo presentasi: guru@schoolhub.id / admin2026</p></div></div>
 <script>const buttons=[...document.querySelectorAll('[data-view]')];const views=[...document.querySelectorAll('.view')];function show(id){views.forEach(v=>v.classList.toggle('active',v.id===id));buttons.forEach(b=>b.classList.toggle('active',b.dataset.view===id));window.scrollTo({top:0,behavior:'smooth'})}buttons.forEach(b=>b.addEventListener('click',()=>show(b.dataset.view)));document.querySelector('#search').addEventListener('input',e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('.course,.item').forEach(x=>x.style.display=x.innerText.toLowerCase().includes(q)?'':'none')});const editBtn=document.querySelector('#editBtn'),modal=document.querySelector('#loginModal'),code=document.querySelector('#accessCode'),email=document.querySelector('#loginEmail'),msg=document.querySelector('#loginMsg');let admin=false;const studentsKey='schoolhub-students',teachersKey='schoolhub-teachers';const defaultStudents=[{name:'Andi Pratama',className:'3A'},{name:'Siti Rahma',className:'3B'},{name:'Fajar Dako',className:'3C'}],defaultTeachers=[{name:'Dr. Warni Tune Sumar',subject:'Manajemen Kearsipan'},{name:'Nur Lutfhi Ardhian, M.Pd',subject:'Perencanaan Pendidikan'},{name:'Dr. Arifin, S.Pd., M.Pd.',subject:'Manajemen Berbasis Sekolah'}];function getData(key,defaults){try{return JSON.parse(localStorage.getItem(key))||defaults}catch(e){return defaults}}function saveData(key,data){localStorage.setItem(key,JSON.stringify(data))}let students=getData(studentsKey,defaultStudents),teachers=getData(teachersKey,defaultTeachers);function renderAdmin(){const sb=document.querySelector('#studentBody'),tb=document.querySelector('#teacherBody');sb.innerHTML=students.map((x,i)=>'<tr><td>'+x.name+'</td><td>'+x.className+'</td><td><button class="crudBtn" onclick="editStudent('+i+')">Edit</button><button class="crudBtn danger" onclick="deleteStudent('+i+')">Hapus</button></td></tr>').join('');tb.innerHTML=teachers.map((x,i)=>'<tr><td>'+x.name+'</td><td>'+x.subject+'</td><td><button class="crudBtn" onclick="editTeacher('+i+')">Edit</button><button class="crudBtn danger" onclick="deleteTeacher('+i+')">Hapus</button></td></tr>').join('');document.querySelector('#studentCount').textContent=students.length;document.querySelector('#teacherCount').textContent=teachers.length}window.editStudent=i=>{const name=prompt('Nama siswa:',students[i].name);if(name===null)return;const className=prompt('Kelas:',students[i].className);if(className===null)return;students[i]={name,className};saveData(studentsKey,students);renderAdmin()};window.deleteStudent=i=>{if(confirm('Hapus data siswa ini?')){students.splice(i,1);saveData(studentsKey,students);renderAdmin()}};window.editTeacher=i=>{const name=prompt('Nama guru/dosen:',teachers[i].name);if(name===null)return;const subject=prompt('Mata pelajaran:',teachers[i].subject);if(subject===null)return;teachers[i]={name,subject};saveData(teachersKey,teachers);renderAdmin()};window.deleteTeacher=i=>{if(confirm('Hapus data guru/dosen ini?')){teachers.splice(i,1);saveData(teachersKey,teachers);renderAdmin()}};document.querySelector('#addStudent').addEventListener('click',()=>{const name=prompt('Nama siswa:');if(!name)return;const className=prompt('Kelas:');if(!className)return;students.push({name,className});saveData(studentsKey,students);renderAdmin()});document.querySelector('#addTeacher').addEventListener('click',()=>{const name=prompt('Nama guru/dosen:');if(!name)return;const subject=prompt('Mata pelajaran:');if(!subject)return;teachers.push({name,subject});saveData(teachersKey,teachers);renderAdmin()});function openLogin(){modal.classList.add('show');email.focus()}editBtn.addEventListener('click',openLogin);document.querySelector('#cancelLogin').addEventListener('click',()=>{modal.classList.remove('show');email.value='';code.value='';msg.textContent=''});document.querySelector('#loginBtn').addEventListener('click',()=>{if(email.value.trim()==='guru@schoolhub.id'&&code.value==='admin2026'){admin=true;modal.classList.remove('show');renderAdmin();show('admin');document.querySelector('#roleLabel').textContent='Guru/Dosen • Admin';editBtn.textContent='↪ Logout';document.querySelector('#editBtn').onclick=logout;document.querySelector('#admin').classList.add('active')}else{msg.textContent='Email atau password salah.'}});function logout(){admin=false;show('dashboard');document.querySelector('#roleLabel').textContent='Portal Manajemen Sekolah';editBtn.textContent='🔐 Login Guru/Dosen';document.querySelector('#editBtn').onclick=openLogin}document.querySelector('#logoutBtn').addEventListener('click',logout);code.addEventListener('keydown',e=>{if(e.key==='Enter')document.querySelector('#loginBtn').click()});</script>
 <script>const loginBtnG=document.querySelector('#loginBtn'),loginEmailG=document.querySelector('#loginEmail'),loginMsgG=document.querySelector('#loginMsg'),modalG=document.querySelector('#loginModal'),editBtnG=document.querySelector('#editBtn'),roleLabelG=document.querySelector('#roleLabel');let studentG=false;const roleBox=document.createElement('div');roleBox.id='gmailRoles';roleBox.style.display='none';roleBox.style.marginTop='12px';roleBox.innerHTML='<p><b>Pilih jenis akun:</b></p><div class="loginActions"><button id="gmailStudent" class="secondaryBtn">🎓 Siswa/Mahasiswa</button><button id="gmailTeacher" class="primaryBtn">👨‍🏫 Guru/Dosen</button></div>';document.querySelector('.loginPage').appendChild(roleBox);const pass=document.querySelector('#accessCode');pass.style.display='none';pass.previousElementSibling.style.display='none';const oldLogin=loginBtnG.cloneNode(true);loginBtnG.replaceWith(oldLogin);const gmailLogin=document.querySelector('#loginBtn');gmailLogin.textContent='Lanjut dengan Gmail';gmailLogin.addEventListener('click',()=>{const e=loginEmailG.value.trim().toLowerCase();if(!/^[^\s@]+@gmail\.com$/.test(e)){loginMsgG.textContent='Hanya akun Gmail (@gmail.com) yang diperbolehkan.';roleBox.style.display='none';return}loginMsgG.textContent='Gmail diterima. Pilih jenis akun:';roleBox.style.display='block';document.querySelector('#gmailStudent').dataset.email=e;document.querySelector('#gmailTeacher').dataset.email=e});document.querySelector('#gmailStudent').addEventListener('click',()=>{studentG=true;admin=false;modalG.classList.remove('show');const e=document.querySelector('#gmailStudent').dataset.email;let p={name:'',nim:'',className:'',program:'',email:e,phone:'',address:''};try{p=JSON.parse(localStorage.getItem('schoolhub-profile'))||p}catch(x){}document.querySelector('#profileName').value=p.name;document.querySelector('#profileNim').value=p.nim;document.querySelector('#profileClass').value=p.className;document.querySelector('#profileProgram').value=p.program;document.querySelector('#profileEmail').value=p.email||e;document.querySelector('#profilePhone').value=p.phone;document.querySelector('#profileAddress').value=p.address;show('profil');roleLabelG.textContent='Siswa/Mahasiswa • Data Diri';editBtnG.textContent='↪ Logout';document.querySelectorAll('.nav button').forEach(b=>b.style.display=(b.dataset.view==='dashboard'||b.dataset.view==='profil')?'block':'none')});document.querySelector('#gmailTeacher').addEventListener('click',()=>{admin=true;studentG=false;modalG.classList.remove('show');renderAdmin();show('admin');roleLabelG.textContent='Guru/Dosen • Admin';editBtnG.textContent='↪ Logout';document.querySelectorAll('.nav button').forEach(b=>b.style.display='block')});document.querySelector('#saveProfile').addEventListener('click',()=>{localStorage.setItem('schoolhub-profile',JSON.stringify({name:document.querySelector('#profileName').value,nim:document.querySelector('#profileNim').value,className:document.querySelector('#profileClass').value,program:document.querySelector('#profileProgram').value,email:document.querySelector('#profileEmail').value,phone:document.querySelector('#profilePhone').value,address:document.querySelector('#profileAddress').value}));document.querySelector('#profileMsg').textContent='Data diri berhasil disimpan.'});</script>
+<script>
+(function(){
+const taskKey='schoolhub-tugas',noticeKey='schoolhub-pengumuman';
+function read(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}}
+let tasks=read(taskKey,[{title:'Makalah Pencatatan dan Klasifikasi Arsip',subject:'Manajemen Kearsipan',deadline:'2 Oktober 2026',desc:'Buat makalah sesuai materi yang telah diberikan.'},{title:'Analisis Implementasi MBS',subject:'Manajemen Berbasis Sekolah',deadline:'5 Oktober 2026',desc:'Analisis penerapan MBS di satuan pendidikan.'},{title:'Literature Review Perencanaan Pendidikan',subject:'Perencanaan Pendidikan',deadline:'8 Oktober 2026',desc:'Susun literature review sesuai ketentuan dosen.'}]);
+let notices=read(noticeKey,[{title:'Perubahan jadwal perkuliahan',desc:'Perkuliahan hari Jumat dipindahkan ke Senin pukul 10.00.'},{title:'Pengumpulan tugas',desc:'Pastikan file tugas sudah diunggah sebelum batas waktu.'}]);
+function save(k,d){localStorage.setItem(k,JSON.stringify(d))}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function teacher(){return admin===true}
+function setupTaskPanel(){const sec=document.querySelector('#tugas');if(!sec||document.querySelector('#taskTeacher'))return;const p=document.createElement('div');p.id='taskTeacher';p.className='adminPanel';p.style.display='none';p.innerHTML='<div class="section-head"><h2>Kelola Tugas</h2><span class="badge">Khusus Guru/Dosen</span></div><div class="grid"><div><label>Mata Pelajaran / Mata Kuliah</label><select id="taskSubject" class="search" style="width:100%"><option>Manajemen Kearsipan</option><option>Manajemen Berbasis Sekolah</option><option>Perencanaan Pendidikan</option></select></div><div><label>Judul Tugas</label><input id="taskTitle" class="search" style="width:100%" placeholder="Judul tugas"></div><div><label>Tenggat</label><input id="taskDeadline" class="search" style="width:100%" placeholder="Contoh: 10 Oktober 2026"></div><div><label>Deskripsi</label><input id="taskDesc" class="search" style="width:100%" placeholder="Petunjuk tugas"></div></div><button id="addTask" class="crudBtn">＋ Tambahkan Tugas</button><p id="taskMsg" class="muted"></p>';sec.prepend(p);document.querySelector('#addTask').onclick=()=>{const title=document.querySelector('#taskTitle').value.trim(),subject=document.querySelector('#taskSubject').value,deadline=document.querySelector('#taskDeadline').value.trim(),desc=document.querySelector('#taskDesc').value.trim();if(!title||!deadline){document.querySelector('#taskMsg').textContent='Judul dan tenggat wajib diisi.';return}tasks.unshift({title,subject,deadline,desc});save(taskKey,tasks);document.querySelector('#taskTitle').value='';document.querySelector('#taskDeadline').value='';document.querySelector('#taskDesc').value='';document.querySelector('#taskMsg').textContent='Tugas berhasil ditambahkan.';renderTasks()}}
+function renderTasks(){const sec=document.querySelector('#tugas');if(!sec)return;setupTaskPanel();document.querySelector('#taskTeacher').style.display=teacher()?'block':'none';let list=sec.querySelector('#taskList');if(!list){list=document.createElement('div');list.id='taskList';list.className='list';sec.appendChild(list)}list.innerHTML=tasks.map((x,i)=>'<div class="item"><div><b>'+esc(x.title)+'</b><div class="muted">'+esc(x.subject)+' • '+esc(x.deadline)+'</div><div class="muted">'+esc(x.desc)+'</div></div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge">Aktif</span>'+(teacher()?'<button class="crudBtn" onclick="editTask('+i+')">Edit</button><button class="crudBtn danger" onclick="deleteTask('+i+')">Hapus</button>':'')+'</div></div>').join('')}
+window.editTask=i=>{if(!teacher())return;const x=tasks[i],title=prompt('Judul tugas:',x.title);if(title===null)return;const subject=prompt('Mata pelajaran/mata kuliah:',x.subject);if(subject===null)return;const deadline=prompt('Tenggat:',x.deadline);if(deadline===null)return;const desc=prompt('Deskripsi tugas:',x.desc||'');if(desc===null)return;tasks[i]={title,subject,deadline,desc};save(taskKey,tasks);renderTasks()};
+window.deleteTask=i=>{if(!teacher())return;if(confirm('Hapus tugas ini?')){tasks.splice(i,1);save(taskKey,tasks);renderTasks()}};
+function setupNoticePanel(){const sec=document.querySelector('#pengumuman');if(!sec||document.querySelector('#noticeTeacher'))return;const p=document.createElement('div');p.id='noticeTeacher';p.className='adminPanel';p.style.display='none';p.innerHTML='<div class="section-head"><h2>Kelola Pengumuman</h2><span class="badge">Khusus Guru/Dosen</span></div><div class="grid"><div><label>Judul Pengumuman</label><input id="noticeTitle" class="search" style="width:100%" placeholder="Judul pengumuman"></div><div><label>Isi Pengumuman</label><input id="noticeDesc" class="search" style="width:100%" placeholder="Tulis informasi untuk siswa/mahasiswa"></div></div><button id="addNotice" class="crudBtn">＋ Terbitkan Pengumuman</button><p id="noticeMsg" class="muted"></p>';sec.prepend(p);document.querySelector('#addNotice').onclick=()=>{const title=document.querySelector('#noticeTitle').value.trim(),desc=document.querySelector('#noticeDesc').value.trim();if(!title||!desc){document.querySelector('#noticeMsg').textContent='Judul dan isi wajib diisi.';return}notices.unshift({title,desc});save(noticeKey,notices);document.querySelector('#noticeTitle').value='';document.querySelector('#noticeDesc').value='';document.querySelector('#noticeMsg').textContent='Pengumuman berhasil diterbitkan.';renderNotices()}}
+function renderNotices(){const sec=document.querySelector('#pengumuman');if(!sec)return;setupNoticePanel();document.querySelector('#noticeTeacher').style.display=teacher()?'block':'none';let list=sec.querySelector('#noticeList');if(!list){list=document.createElement('div');list.id='noticeList';list.className='list';sec.appendChild(list)}list.innerHTML=notices.map((x,i)=>'<div class="card notice"><div style="display:flex;justify-content:space-between;gap:10px"><div><b>'+esc(x.title)+'</b><p class="muted">'+esc(x.desc)+'</p></div>'+(teacher()?'<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="crudBtn" onclick="editNotice('+i+')">Edit</button><button class="crudBtn danger" onclick="deleteNotice('+i+')">Hapus</button></div>':'')+'</div></div>').join('')}
+window.editNotice=i=>{if(!teacher())return;const x=notices[i],title=prompt('Judul pengumuman:',x.title);if(title===null)return;const desc=prompt('Isi pengumuman:',x.desc);if(desc===null)return;notices[i]={title,desc};save(noticeKey,notices);renderNotices()};
+window.deleteNotice=i=>{if(!teacher())return;if(confirm('Hapus pengumuman ini?')){notices.splice(i,1);save(noticeKey,notices);renderNotices()}};
+const oldShowContent=show;show=(id)=>{oldShowContent(id);if(id==='tugas'||id==='materi'||id==='pengumuman'){renderTasks();renderNotices()}};
+const oldRenderAdminContent=renderAdmin;renderAdmin=()=>{oldRenderAdminContent();renderTasks();renderNotices()};
+renderTasks();renderNotices();
+})();
+</script>
 </body><script>
 const statsKey='schoolhub-summary';
 let schoolStats={classes:18,attendance:94};
@@ -44,15 +66,123 @@ function setupSummaryAdmin(){if(document.querySelector('#summaryAdmin'))return;c
 const oldRenderAdmin=renderAdmin;renderAdmin=()=>{oldRenderAdmin();setupSummaryAdmin();updateSummary()};updateSummary();
 </script></html>
 <script>
+(function(){
+const materiKey='schoolhub-materi-files';
+let materiData=[];
+try{materiData=JSON.parse(localStorage.getItem(materiKey))||[]}catch(e){}
+function saveMateri(){localStorage.setItem(materiKey,JSON.stringify(materiData))}
+function renderMateri(){
+ const list=document.querySelector('#materiList'),count=document.querySelector('#materiCount');
+ if(!list)return;
+ if(count)count.textContent=materiData.length+' file';
+ list.innerHTML=materiData.length?materiData.map((m,i)=>'<div class="item"><div><b>'+m.title+'</b><div class="muted">'+m.subject+' • '+m.fileName+'</div></div><div style="display:flex;gap:6px;flex-wrap:wrap"><a class="badge" href="'+m.data+'" download="'+m.fileName+'">Buka / Unduh</a>'+(admin?'<button class="crudBtn danger" onclick="deleteMateri('+i+')">Hapus</button>':'')+'</div></div>').join(''):'<div class="card"><b>Belum ada file materi.</b><p class="muted">Guru/Dosen dapat menambahkan file materi melalui panel di atas.</p></div>';
+}
+window.deleteMateri=function(i){if(!admin)return;if(confirm('Hapus file materi ini?')){materiData.splice(i,1);saveMateri();renderMateri()}};
+function syncMateriRole(){
+ const box=document.querySelector('#materiTeacher');
+ if(box)box.style.display=admin?'block':'none';
+ renderMateri();
+}
+document.querySelector('#addMateri')?.addEventListener('click',()=>{
+ if(!admin)return;
+ const subject=document.querySelector('#materiSubject').value;
+ const title=document.querySelector('#materiTitle').value.trim();
+ const file=document.querySelector('#materiFile').files[0];
+ const msg=document.querySelector('#materiMsg');
+ if(!title||!file){msg.textContent='Isi judul dan pilih file materi terlebih dahulu.';return}
+ if(file.size>4000000){msg.textContent='Ukuran file maksimal 4 MB untuk penyimpanan demo website.';return}
+ const reader=new FileReader();
+ reader.onload=function(){
+  materiData.unshift({title,subject,fileName:file.name,data:reader.result});
+  try{saveMateri();document.querySelector('#materiTitle').value='';document.querySelector('#materiFile').value='';msg.textContent='File materi berhasil ditambahkan.';renderMateri()}
+  catch(e){msg.textContent='File terlalu besar untuk penyimpanan browser. Gunakan file maksimal 4 MB.'}
+ };
+ reader.readAsDataURL(file);
+});
+document.querySelector('[data-view="materi"]')?.addEventListener('click',()=>setTimeout(syncMateriRole,0));
+const oldAdd=window.renderAdmin;
+if(typeof oldAdd==='function'){window.renderAdmin=function(){oldAdd();syncMateriRole()}}
+const oldShow=window.show;
+if(typeof oldShow==='function'){window.show=function(id){oldShow(id);if(id==='materi')syncMateriRole()}}
+syncMateriRole();
+})();
+</script>
+<script>
+(function(){
+function enhanceMaterials(){
+ const list=document.querySelector('#materiList');if(!list)return;
+ let data=[];try{data=JSON.parse(localStorage.getItem('schoolhub-materi-files'))||[]}catch(e){}
+ [...list.querySelectorAll('.item')].forEach((item,i)=>{
+  if(!admin||item.querySelector('.editMateriBtn'))return;
+  const wrap=item.querySelector('div[style*="display:flex"]')||item.lastElementChild;
+  if(!wrap)return;
+  const b=document.createElement('button');b.className='crudBtn editMateriBtn';b.textContent='Edit';b.onclick=()=>{
+   const m=data[i];if(!m)return;
+   const title=prompt('Judul materi:',m.title);if(title===null)return;
+   const subject=prompt('Mata pelajaran/mata kuliah:',m.subject);if(subject===null)return;
+   m.title=title;m.subject=subject;
+   const input=document.createElement('input');input.type='file';input.onchange=()=>{const f=input.files[0];if(!f){localStorage.setItem('schoolhub-materi-files',JSON.stringify(data));return}if(f.size>4000000){alert('Ukuran file maksimal 4 MB.');return}const reader=new FileReader();reader.onload=()=>{m.fileName=f.name;m.data=reader.result;localStorage.setItem('schoolhub-materi-files',JSON.stringify(data));enhanceMaterials()};reader.readAsDataURL(f)};
+   input.click();
+   localStorage.setItem('schoolhub-materi-files',JSON.stringify(data));
+   setTimeout(()=>{const msg=document.querySelector('#materiMsg');if(msg)msg.textContent='Materi berhasil diperbarui.'},0);
+  };
+  wrap.insertBefore(b,wrap.firstChild);
+ });
+}
+setInterval(enhanceMaterials,700);
+enhanceMaterials();
+})();
+</script>
+</body><script>
+(function(){
 const attendanceKey='schoolhub-attendance';
 let attendanceData={};
 try{attendanceData=JSON.parse(localStorage.getItem(attendanceKey))||{}}catch(e){}
-function renderAttendanceTable(){const body=document.querySelector('#attendanceBody');if(!body)return;const subject=document.querySelector('#attendanceSubject').value;body.innerHTML=students.map((x,i)=>{const value=attendanceData[subject]?.[i]||'hadir';return '<tr><td>'+x.name+'</td><td><input type="radio" name="att'+i+'" value="hadir" '+(value==='hadir'?'checked':'')+'></td><td><input type="radio" name="att'+i+'" value="izin" '+(value==='izin'?'checked':'')+'></td><td><input type="radio" name="att'+i+'" value="sakit" '+(value==='sakit'?'checked':'')+'></td><td><input type="radio" name="att'+i+'" value="alpa" '+(value==='alpa'?'checked':'')+'></td></tr>'}).join('')}
-function renderAttendancePercent(){const map=[['Manajemen Kearsipan','attPctKearsipan'],['Manajemen Berbasis Sekolah','attPctMbs'],['Perencanaan Pendidikan','attPctPerencanaan']];map.forEach(([subject,id])=>{const rows=attendanceData[subject]||{};const vals=students.map((_,i)=>rows[i]).filter(Boolean);const hadir=vals.filter(v=>v==='hadir').length;document.querySelector('#'+id).textContent=(vals.length?Math.round(hadir/vals.length*100):0)+'%'})}
-document.querySelector('#attendanceSubject').addEventListener('change',renderAttendanceTable);document.querySelector('#saveAttendance').addEventListener('click',()=>{if(!admin)return;const subject=document.querySelector('#attendanceSubject').value;attendanceData[subject]={};students.forEach((_,i)=>{const checked=document.querySelector('input[name="att'+i+'"]:checked');attendanceData[subject][i]=checked?checked.value:'hadir'});localStorage.setItem(attendanceKey,JSON.stringify(attendanceData));renderAttendancePercent();document.querySelector('#attendanceMsg').textContent='Absensi '+subject+' berhasil disimpan.'});
-document.querySelector('[data-view="absensi"]').addEventListener('click',()=>{renderAttendanceTable();renderAttendancePercent()});
-setInterval(()=>{const isStudent=document.querySelector('#roleLabel').textContent.includes('Siswa/Mahasiswa');const isTeacher=document.querySelector('#roleLabel').textContent.includes('Guru/Dosen');const navAbs=document.querySelector('[data-view="absensi"]');if(navAbs)navAbs.style.display=(isStudent||isTeacher)?'block':'none';const t=document.querySelector('#attendanceTeacher'),s=document.querySelector('#attendanceStudent');if(t&&s){t.style.display=isTeacher?'block':'none';s.style.display=isTeacher?'none':'block'}},300);
-renderAttendanceTable();renderAttendancePercent();
+const subjects=['Manajemen Kearsipan','Manajemen Berbasis Sekolah','Perencanaan Pendidikan'];
+function studentId(x){return String(x.name||'').trim().toLowerCase()+'|'+String(x.className||'').trim().toLowerCase()}
+function ensureAttendance(){subjects.forEach(subject=>{if(!attendanceData[subject]||typeof attendanceData[subject]!=='object')attendanceData[subject]={};students.forEach(x=>{const id=studentId(x);if(!attendanceData[subject][id])attendanceData[subject][id]='hadir'})})}
+function renderAttendanceTable(){
+ const body=document.querySelector('#attendanceBody'),select=document.querySelector('#attendanceSubject');
+ if(!body||!select)return;
+ ensureAttendance();
+ const subject=select.value;
+ body.innerHTML=students.length?students.map((x,i)=>{const id=studentId(x),value=attendanceData[subject][id]||'hadir';return '<tr><td><b>'+x.name+'</b><div class="muted">'+x.className+'</div></td><td><input type="radio" name="att'+i+'" value="hadir" '+(value==='hadir'?'checked':'')+'></td><td><input type="radio" name="att'+i+'" value="izin" '+(value==='izin'?'checked':'')+'></td><td><input type="radio" name="att'+i+'" value="sakit" '+(value==='sakit'?'checked':'')+'></td><td><input type="radio" name="att'+i+'" value="alpa" '+(value==='alpa'?'checked':'')+'></td></tr>'}).join(''):'<tr><td colspan="5" class="muted">Belum ada siswa. Tambahkan siswa di Data Siswa/Admin.</td></tr>';
+}
+function renderAttendancePercent(){
+ ensureAttendance();
+ const map=[['Manajemen Kearsipan','attPctKearsipan'],['Manajemen Berbasis Sekolah','attPctMbs'],['Perencanaan Pendidikan','attPctPerencanaan']];
+ map.forEach(([subject,id])=>{const vals=students.map(x=>attendanceData[subject][studentId(x)]).filter(Boolean);const hadir=vals.filter(v=>v==='hadir').length;const el=document.querySelector('#'+id);if(el)el.textContent=(vals.length?Math.round(hadir/vals.length*100):0)+'%'});
+}
+function saveAttendance(){
+ if(!admin)return;
+ const subject=document.querySelector('#attendanceSubject').value;
+ attendanceData[subject]={};
+ students.forEach((x,i)=>{const checked=document.querySelector('input[name="att'+i+'"]:checked');attendanceData[subject][studentId(x)]=checked?checked.value:'hadir'});
+ localStorage.setItem(attendanceKey,JSON.stringify(attendanceData));
+ renderAttendancePercent();
+ document.querySelector('#attendanceMsg').textContent='Absensi '+subject+' berhasil disimpan.';
+}
+function syncAttendanceRole(){
+ const isStudent=studentG===true;
+ const isTeacher=admin===true;
+ const navAbs=document.querySelector('[data-view="absensi"]');
+ const teacherBox=document.querySelector('#attendanceTeacher');
+ const studentBox=document.querySelector('#attendanceStudent');
+ if(navAbs)navAbs.style.display=(isStudent||isTeacher)?'block':'none';
+ if(teacherBox)teacherBox.style.display=isTeacher?'block':'none';
+ if(studentBox)studentBox.style.display=isStudent?'block':'none';
+}
+document.querySelector('#attendanceSubject').addEventListener('change',renderAttendanceTable);
+document.querySelector('#saveAttendance').addEventListener('click',saveAttendance);
+document.querySelector('[data-view="absensi"]').addEventListener('click',()=>{renderAttendanceTable();renderAttendancePercent();syncAttendanceRole()});
+const originalRenderAdminAttendance=renderAdmin;
+renderAdmin=()=>{originalRenderAdminAttendance();renderAttendanceTable();renderAttendancePercent();syncAttendanceRole()};
+const originalShowAttendance=show;
+show=(id)=>{originalShowAttendance(id);if(id==='absensi'){renderAttendanceTable();renderAttendancePercent();syncAttendanceRole()}};
+syncAttendanceRole();
+renderAttendanceTable();
+renderAttendancePercent();
+})();
 </script>
 <script>
 (function(){
@@ -79,6 +209,8 @@ function refreshAttendancePage(){
 }
 document.querySelector('[data-view="absensi"]')?.addEventListener('click',()=>setTimeout(refreshAttendancePage,0));
 document.querySelector('#attendanceSubject')?.addEventListener('change',refreshAttendancePage);
+const oldLogoutForAttendance=window.logout;
+if(typeof oldLogoutForAttendance==='function'&&!window.logout.__attendanceFixed){window.logout=function(){oldLogoutForAttendance();refreshAttendancePage()};window.logout.__attendanceFixed=true}
 setInterval(refreshAttendancePage,500);
 refreshAttendancePage();
 })();
