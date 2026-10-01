@@ -290,3 +290,35 @@ setInterval(refreshAttendancePage,500);
 refreshAttendancePage();
 })();
 </script>
+<script>
+(function(){
+const accountKey='schoolhub-accounts';
+const defaultAccounts=[
+ {email:'dosen@schoolhub.id',password:'dosen2026',role:'teacher',name:'Dosen SchoolHub'},
+ {email:'mahasiswa@schoolhub.id',password:'mahasiswa2026',role:'student',name:'Mahasiswa SchoolHub'}
+];
+function readAccounts(){try{return JSON.parse(localStorage.getItem(accountKey))||defaultAccounts}catch(e){return defaultAccounts}}
+function saveAccounts(a){localStorage.setItem(accountKey,JSON.stringify(a))}
+let accounts=readAccounts();
+if(!localStorage.getItem(accountKey))saveAccounts(accounts);
+const box=document.querySelector('#loginModal .loginPage');
+const oldLogin=box?.innerHTML;
+if(!box)return;
+box.innerHTML='<h2>Login SchoolHub</h2><p class="muted">Gunakan akun masing-masing. Dosen dapat mengelola konten, sedangkan mahasiswa hanya dapat melihat materi, tugas, pengumuman, dan absensi.</p><label>Email akun</label><input id="accountEmail" type="email" placeholder="contoh: nama@gmail.com"><label>Password</label><input id="accountPassword" type="password" placeholder="Masukkan password"><div class="loginActions"><button id="accountCancel" class="secondaryBtn">Batal</button><button id="accountLogin" class="primaryBtn">Login</button></div><button id="studentRegister" class="editBtn" style="width:100%;margin-top:10px">＋ Buat Akun Mahasiswa</button><p id="accountMsg" class="muted"></p><div class="card" style="margin-top:14px;padding:12px"><b>Demo akun dosen</b><div class="muted" style="margin-top:6px">dosen@schoolhub.id / dosen2026</div><div class="muted" style="margin-top:6px">Akun mahasiswa dapat dibuat sendiri.</div></div>';
+const aEmail=document.querySelector('#accountEmail'),aPass=document.querySelector('#accountPassword'),aMsg=document.querySelector('#accountMsg');
+document.querySelector('#accountCancel').onclick=()=>{modal.classList.remove('show');aEmail.value='';aPass.value='';aMsg.textContent=''};
+function applyTeacher(email){admin=true;studentG=false;modal.classList.remove('show');renderAdmin();show('admin');roleLabelG.textContent='Dosen • Admin';editBtnG.textContent='↪ Logout';document.querySelectorAll('.nav button').forEach(b=>b.style.display='block');localStorage.setItem('schoolhub-session',JSON.stringify({email,role:'teacher'}))}
+function applyStudent(email){admin=false;studentG=true;modal.classList.remove('show');let p={name:'',nim:'',className:'',program:'',email,phone:'',address:''};try{p=JSON.parse(localStorage.getItem('schoolhub-profile-'+email))||p}catch(e){}document.querySelector('#profileName').value=p.name;document.querySelector('#profileNim').value=p.nim;document.querySelector('#profileClass').value=p.className;document.querySelector('#profileProgram').value=p.program;document.querySelector('#profileEmail').value=email;document.querySelector('#profilePhone').value=p.phone;document.querySelector('#profileAddress').value=p.address;show('profil');roleLabelG.textContent='Mahasiswa • Akun Pribadi';editBtnG.textContent='↪ Logout';document.querySelectorAll('.nav button').forEach(b=>b.style.display=(b.dataset.view==='dashboard'||b.dataset.view==='profil'||b.dataset.view==='materi'||b.dataset.view==='tugas'||b.dataset.view==='pengumuman'||b.dataset.view==='absensi')?'block':'none');localStorage.setItem('schoolhub-session',JSON.stringify({email,role:'student'}))}
+document.querySelector('#accountLogin').onclick=()=>{const e=aEmail.value.trim().toLowerCase(),p=aPass.value;const found=accounts.find(x=>x.email===e&&x.password===p);if(!found){aMsg.textContent='Email atau password salah. Gunakan akun sesuai jenis pengguna.';return}if(found.role==='teacher')applyTeacher(e);else applyStudent(e)};
+document.querySelector('#studentRegister').onclick=()=>{const e=prompt('Email mahasiswa:','');if(!e)return;const email=e.trim().toLowerCase();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){aMsg.textContent='Format email tidak valid.';return}if(accounts.some(x=>x.email===email)){aMsg.textContent='Email tersebut sudah memiliki akun.';return}const password=prompt('Buat password minimal 6 karakter:','');if(!password||password.length<6){aMsg.textContent='Password minimal 6 karakter.';return}accounts.push({email,password,role:'student',name:'Mahasiswa'});saveAccounts(accounts);aEmail.value=email;aPass.value=password;aMsg.textContent='Akun mahasiswa berhasil dibuat. Silakan Login.'};
+aPass.addEventListener('keydown',e=>{if(e.key==='Enter')document.querySelector('#accountLogin').click()});
+editBtnG.onclick=openLogin;
+const oldLogout=window.logout;
+window.logout=function(){if(typeof oldLogout==='function')oldLogout();localStorage.removeItem('schoolhub-session');studentG=false;admin=false;document.querySelectorAll('.nav button').forEach(b=>b.style.display='block');roleLabelG.textContent='Portal Manajemen Sekolah';editBtnG.textContent='🔐 Login Akun';editBtnG.onclick=openLogin};
+document.querySelector('#logoutBtn').onclick=window.logout;
+document.querySelector('#saveProfile').onclick=()=>{const e=document.querySelector('#profileEmail').value;localStorage.setItem('schoolhub-profile-'+e,JSON.stringify({name:document.querySelector('#profileName').value,nim:document.querySelector('#profileNim').value,className:document.querySelector('#profileClass').value,program:document.querySelector('#profileProgram').value,email:e,phone:document.querySelector('#profilePhone').value,address:document.querySelector('#profileAddress').value}));document.querySelector('#profileMsg').textContent='Data diri akun ini berhasil disimpan.'};
+const session=(()=>{try{return JSON.parse(localStorage.getItem('schoolhub-session'))}catch(e){return null}})();
+if(session){const found=accounts.find(x=>x.email===session.email&&x.role===session.role);if(found){if(found.role==='teacher')applyTeacher(found.email);else applyStudent(found.email)}}
+editBtnG.textContent='🔐 Login Akun';
+})();
+</script>
