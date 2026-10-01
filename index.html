@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://uwwgkiiaclitjdkhpowi.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>SchoolHub — Portal Manajemen Sekolah</title>
 <style>
@@ -55,6 +55,81 @@ window.deleteNotice=i=>{if(!teacher())return;if(confirm('Hapus pengumuman ini?')
 const oldShowContent=show;show=(id)=>{oldShowContent(id);if(id==='tugas'||id==='materi'||id==='pengumuman'){renderTasks();renderNotices()}};
 const oldRenderAdminContent=renderAdmin;renderAdmin=()=>{oldRenderAdminContent();renderTasks();renderNotices()};
 renderTasks();renderNotices();
+})();
+</script>
+<script>
+(function(){
+const SB_URL='https://uwwgkiiaclitjdkhpowi.supabase.co',SB_KEY='sb_publishable_a8rYvw2Tp7J0zPrf8CQmMA_qOh_SHva';
+const tables=['schoolhub_students','schoolhub_teachers','schoolhub_summary','schoolhub_tasks','schoolhub_announcements','schoolhub_materials','schoolhub_attendance'];
+let syncing=false,lastRemote='';
+async function api(table,options={}){
+ const r=await fetch(SB_URL+'/rest/v1/'+table,{...options,headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',...(options.headers||{})}});
+ if(!r.ok)throw new Error(await r.text());
+ const t=await r.text();return t?JSON.parse(t):null;
+}
+function localState(){
+ return {students:getData('schoolhub-students',defaultStudents),teachers:getData('schoolhub-teachers',defaultTeachers),summary:(()=>{try{return Object.assign({classes:18,attendance:94},JSON.parse(localStorage.getItem('schoolhub-summary'))||{})}catch(e){return {classes:18,attendance:94}}})(),tasks:(()=>{try{return JSON.parse(localStorage.getItem('schoolhub-tugas'))||[]}catch(e){return []}})(),announcements:(()=>{try{return JSON.parse(localStorage.getItem('schoolhub-pengumuman'))||[]}catch(e){return []}})(),materials:(()=>{try{return JSON.parse(localStorage.getItem('schoolhub-materi-files'))||[]}catch(e){return []}})(),attendance:(()=>{try{return JSON.parse(localStorage.getItem('schoolhub-attendance'))||{}}catch(e){return {}})()}};
+}
+function studentRows(a){return a.map(x=>({student_key:String(x.name||'').trim().toLowerCase()+'|'+String(x.className||'').trim().toLowerCase(),name:x.name,class_name:x.className}))}
+function teacherRows(a){return a.map(x=>({teacher_key:String(x.name||'').trim().toLowerCase()+'|'+String(x.subject||'').trim().toLowerCase(),name:x.name,subject:x.subject}))}
+function taskRows(a){return a.map(x=>({id:x.id||crypto.randomUUID(),title:x.title,subject:x.subject,deadline:x.deadline,description:x.desc||x.description||''}))}
+function noticeRows(a){return a.map(x=>({id:x.id||crypto.randomUUID(),title:x.title,description:x.desc||x.description||''}))}
+function materialRows(a){return a.map(x=>({id:x.id||crypto.randomUUID(),title:x.title,subject:x.subject,file_name:x.fileName||x.file_name||'',file_data:x.data||x.file_data||''}))}
+function attendanceRows(a){const out=[];Object.keys(a||{}).forEach(subject=>Object.keys(a[subject]||{}).forEach(student_key=>out.push({subject,student_key,status:a[subject][student_key]})));return out}
+async function replace(table,rows){
+ const filters={schoolhub_students:'student_key=not.is.null',schoolhub_teachers:'teacher_key=not.is.null',schoolhub_summary:'id=eq.1',schoolhub_tasks:'id=not.is.null',schoolhub_announcements:'id=not.is.null',schoolhub_materials:'id=not.is.null',schoolhub_attendance:'student_key=not.is.null'};
+ await api(table+'?'+filters[table],{method:'DELETE',headers:{Prefer:'return=minimal'}});
+ if(!rows.length)return;
+ await api(table,{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(rows)});
+}
+async function pushAll(){
+ if(syncing)return;
+ syncing=true;
+ try{
+  const s=localState();
+  await replace('schoolhub_students',studentRows(s.students));
+  await replace('schoolhub_teachers',teacherRows(s.teachers));
+  await replace('schoolhub_summary',[{id:1,classes:Number(s.summary.classes)||18,attendance:Number(s.summary.attendance)||0}]);
+  await replace('schoolhub_tasks',taskRows(s.tasks));
+  await replace('schoolhub_announcements',noticeRows(s.announcements));
+  await replace('schoolhub_materials',materialRows(s.materials));
+  await replace('schoolhub_attendance',attendanceRows(s.attendance));
+  lastRemote=JSON.stringify(s);
+ }catch(e){console.warn('SchoolHub sync:',e)}
+ finally{syncing=false}
+}
+async function pullAll(){
+ if(syncing)return;
+ try{
+  const [st,tr,sm,ta,no,ma,at]=await Promise.all(tables.map(t=>api(t+'?select=*')));
+  const hasRemote=st.length||tr.length||ta.length||no.length||ma.length||at.length;
+  if(!hasRemote){await pushAll();return}
+  const remote={students:st.map(x=>({name:x.name,className:x.class_name})),teachers:tr.map(x=>({name:x.name,subject:x.subject})),summary:sm[0]?{classes:sm[0].classes,attendance:sm[0].attendance}:{classes:18,attendance:94},tasks:ta.map(x=>({id:x.id,title:x.title,subject:x.subject,deadline:x.deadline,desc:x.description||''})),announcements:no.map(x=>({id:x.id,title:x.title,desc:x.description||''})),materials:ma.map(x=>({id:x.id,title:x.title,subject:x.subject,fileName:x.file_name,data:x.file_data})),attendance:{}};
+  at.forEach(x=>{(remote.attendance[x.subject]||(remote.attendance[x.subject]={}))[x.student_key]=x.status});
+  const fp=JSON.stringify(remote);
+  if(fp!==lastRemote){
+   syncing=true;
+   localStorage.setItem('schoolhub-students',JSON.stringify(remote.students));
+   localStorage.setItem('schoolhub-teachers',JSON.stringify(remote.teachers));
+   localStorage.setItem('schoolhub-summary',JSON.stringify(remote.summary));
+   localStorage.setItem('schoolhub-tugas',JSON.stringify(remote.tasks));
+   localStorage.setItem('schoolhub-pengumuman',JSON.stringify(remote.announcements));
+   localStorage.setItem('schoolhub-materi-files',JSON.stringify(remote.materials));
+   localStorage.setItem('schoolhub-attendance',JSON.stringify(remote.attendance));
+   lastRemote=fp;syncing=false;location.reload();
+  }
+ }catch(e){console.warn('SchoolHub remote read:',e)}
+}
+function localFingerprint(){return JSON.stringify(localState())}
+let lastLocal=localFingerprint();
+setTimeout(async()=>{await pullAll();lastLocal=localFingerprint()},800);
+setInterval(async()=>{
+ if(syncing)return;
+ const now=localFingerprint();
+ if(now!==lastLocal){lastLocal=now;await pushAll()}
+ else await pullAll();
+},5000);
+window.schoolHubRemote={push:pushAll,pull:pullAll};
 })();
 </script>
 </body><script>
